@@ -1,0 +1,41 @@
+@namespace("org.hypertrace.core.viewgenerator.api")
+protocol SpanEventViewProtocol {
+// One record for each span
+  record SpanEventView {
+    string tenant_id;
+
+  // unique identifier for this span
+    bytes span_id;
+
+  // type of span
+    union { null, string } span_kind = null;
+
+  // if there is any relation to parent span
+    union { null, bytes } parent_span_id = null;
+
+  // this span part of a trace
+    bytes trace_id;
+
+  // key:value pairs of all the associated tags to this span
+    map<string> tags = {};
+
+  // start time of the span
+    long start_time_millis = 0;
+
+  // end time of the span
+    long end_time_millis = 0;
+
+  // duration
+    long duration_millis = 0;
+
+  // name of the service
+    union { null, string } service_name = null;
+
+  // event_name that's used to display the span in the UI.
+    union { null, string } event_name = null;
+
+    union { null, string } display_span_name = null;
+
+    union { null, string } status_code = null;
+  }
+}
