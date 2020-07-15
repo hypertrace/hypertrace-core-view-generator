@@ -11,10 +11,6 @@ public class BaseViewGeneratorTest {
   @Test
   public void getServiceName() {
     Event e = MockUtils.createEvent();
-    assertNull(SpanEventViewGenerator.getServiceName(e));
-    e.getAttributes()
-        .getAttributeMap()
-        .put("jaeger.servicename", AttributeValue.newBuilder().setValue("service1").build());
     assertEquals("service1", SpanEventViewGenerator.getServiceName(e));
   }
 }

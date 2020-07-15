@@ -12,9 +12,6 @@ import org.hypertrace.core.datamodel.Event;
 import org.hypertrace.core.datamodel.EventRef;
 import org.hypertrace.core.datamodel.EventRefType;
 import org.hypertrace.core.datamodel.StructuredTrace;
-import org.hypertrace.core.datamodel.shared.SpanAttributeUtils;
-import org.hypertrace.core.span.constants.RawSpanConstants;
-import org.hypertrace.core.span.constants.v1.JaegerAttribute;
 import org.hypertrace.core.viewgenerator.JavaCodeBasedViewGenerator;
 
 /**
@@ -22,8 +19,6 @@ import org.hypertrace.core.viewgenerator.JavaCodeBasedViewGenerator;
  */
 public abstract class BaseViewGenerator<OUT extends GenericRecord>
     implements JavaCodeBasedViewGenerator<StructuredTrace, OUT> {
-  private static final String JAEGER_SERVICE_NAME_ATTR_NAME =
-      RawSpanConstants.getValue(JaegerAttribute.JAEGER_ATTRIBUTE_SERVICE_NAME);
 
   static String getTransactionName(StructuredTrace trace) {
     if (trace.getEventList().size() == 0) {
@@ -34,7 +29,7 @@ public abstract class BaseViewGenerator<OUT extends GenericRecord>
   }
 
   static String getServiceName(Event event) {
-    return SpanAttributeUtils.getStringAttribute(event, JAEGER_SERVICE_NAME_ATTR_NAME);
+    return event.getServiceName();
   }
 
   @Override

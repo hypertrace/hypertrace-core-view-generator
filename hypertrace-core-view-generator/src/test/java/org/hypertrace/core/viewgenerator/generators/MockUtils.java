@@ -15,6 +15,7 @@ public class MockUtils {
 
     Map<String, AttributeValue> attributes = new HashMap<>();
     when(e.getAttributes()).thenReturn(Attributes.newBuilder().setAttributeMap(attributes).build());
+    when(e.getServiceName()).thenReturn("service1");
 
     return e;
   }
