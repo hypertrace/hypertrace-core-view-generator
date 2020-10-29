@@ -18,6 +18,10 @@ dependencies {
   implementation(project(":hypertrace-core-view-generator-api"))
   implementation("org.hypertrace.core.viewcreator:view-creator-framework:0.1.16")
 
+  runtimeOnly("com.google.guava:guava:30.0-android") {
+    because("https://snyk.io/vuln/SNYK-JAVA-COMGOOGLEGUAVA-1015415")
+  }
+
   testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
   testImplementation("org.mockito:mockito-core:3.3.3")
 }
