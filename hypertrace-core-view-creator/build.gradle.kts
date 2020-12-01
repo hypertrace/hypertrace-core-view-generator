@@ -16,10 +16,10 @@ tasks.test {
 
 dependencies {
   implementation(project(":hypertrace-core-view-generator-api"))
-  implementation("org.hypertrace.core.viewcreator:view-creator-framework:0.1.18")
+  implementation("org.hypertrace.core.viewcreator:view-creator-framework:0.1.19")
 
-  testImplementation("org.junit.jupiter:junit-jupiter:5.6.2")
-  testImplementation("org.mockito:mockito-core:3.3.3")
+  testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
+  testImplementation("org.mockito:mockito-core:3.6.28")
 }
 
 description = "view creator for Pinot"
