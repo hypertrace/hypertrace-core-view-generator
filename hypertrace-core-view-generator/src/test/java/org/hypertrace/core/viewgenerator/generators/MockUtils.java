@@ -14,6 +14,7 @@ public class MockUtils {
     Event e = mock(Event.class);
 
     Map<String, AttributeValue> attributes = new HashMap<>();
+    when(e.getEnrichedAttributes()).thenReturn(Attributes.newBuilder().setAttributeMap(attributes).build());
     when(e.getAttributes()).thenReturn(Attributes.newBuilder().setAttributeMap(attributes).build());
     when(e.getServiceName()).thenReturn("service1");
 

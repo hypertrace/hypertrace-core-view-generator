@@ -18,7 +18,7 @@ dependencies {
   implementation(project(":hypertrace-core-view-generator-api"))
   implementation("org.hypertrace.core.viewgenerator:view-generator-framework:0.1.16")
   implementation("org.hypertrace.core.datamodel:data-model:0.1.9")
-  implementation("org.hypertrace.core.spannormalizer:raw-span-constants:0.1.22")
+  implementation("org.hypertrace.traceenricher:enriched-span-constants:0.3.4")
 
   implementation("com.google.code.findbugs:jsr305:3.0.2")
   implementation("org.apache.avro:avro:1.9.2")
