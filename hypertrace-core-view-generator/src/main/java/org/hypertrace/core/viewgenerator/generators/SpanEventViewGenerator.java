@@ -51,7 +51,7 @@ public class SpanEventViewGenerator extends BaseViewGenerator<SpanEventView> {
     builder.setTenantId(event.getCustomerId());
     builder.setSpanId(event.getEventId());
     builder.setEventName(event.getEventName());
-    builder.setSpanKind(getSpanKindFromRawSpan(event));
+    builder.setSpanKind(getSpanKindFromEnrichedSpan(event));
 
     // parent_span_id
     ByteBuffer parentEventId = childToParentEventIds.get(event.getEventId());
@@ -76,17 +76,17 @@ public class SpanEventViewGenerator extends BaseViewGenerator<SpanEventView> {
     builder.setDisplaySpanName(event.getEventName());
 
     // status_code
-    builder.setStatusCode(getStatusCodeFromRawSpan(event));
+    builder.setStatusCode(getStatusCodeFromEnrichedSpan(event));
 
     return builder;
   }
 
-  static String getStatusCodeFromRawSpan(Event e) {
+  static String getStatusCodeFromEnrichedSpan(Event e) {
     return SpanAttributeUtils.getStringAttribute(
         e, EnrichedSpanConstants.getValue(Api.API_STATUS_CODE));
   }
 
-  static String getSpanKindFromRawSpan(Event e) {
+  static String getSpanKindFromEnrichedSpan(Event e) {
     return SpanAttributeUtils.getStringAttributeWithDefault(
         e, EnrichedSpanConstants.getValue(CommonAttribute.COMMON_ATTRIBUTE_SPAN_TYPE),
         EnrichedSpanConstants.getValue(BoundaryTypeValue.BOUNDARY_TYPE_VALUE_UNSPECIFIED));
