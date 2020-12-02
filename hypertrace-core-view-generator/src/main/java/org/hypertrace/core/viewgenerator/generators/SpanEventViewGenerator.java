@@ -8,55 +8,13 @@ import org.apache.avro.Schema;
 import org.hypertrace.core.datamodel.Event;
 import org.hypertrace.core.datamodel.StructuredTrace;
 import org.hypertrace.core.datamodel.shared.SpanAttributeUtils;
-import org.hypertrace.core.span.constants.RawSpanConstants;
-import org.hypertrace.core.span.constants.v1.CensusResponse;
-import org.hypertrace.core.span.constants.v1.Grpc;
-import org.hypertrace.core.span.constants.v1.Http;
-import org.hypertrace.core.span.constants.v1.OCAttribute;
-import org.hypertrace.core.span.constants.v1.OCSpanKind;
-import org.hypertrace.core.span.constants.v1.OTSpanTag;
 import org.hypertrace.core.viewgenerator.api.SpanEventView;
+import org.hypertrace.traceenricher.enrichedspan.constants.EnrichedSpanConstants;
+import org.hypertrace.traceenricher.enrichedspan.constants.v1.Api;
+import org.hypertrace.traceenricher.enrichedspan.constants.v1.BoundaryTypeValue;
+import org.hypertrace.traceenricher.enrichedspan.constants.v1.CommonAttribute;
 
 public class SpanEventViewGenerator extends BaseViewGenerator<SpanEventView> {
-
-  private static final String SPAN_KIND_KEY =
-      RawSpanConstants.getValue(OCAttribute.OC_ATTRIBUTE_SPAN_KIND);
-
-  private static final String SERVER_VALUE =
-      RawSpanConstants.getValue(OCSpanKind.OC_SPAN_KIND_SERVER);
-
-  private static final String CLIENT_VALUE =
-      RawSpanConstants.getValue(OCSpanKind.OC_SPAN_KIND_CLIENT);
-
-  // possible status code attribute names
-  private static final List<String> STATUS_CODE_KEYS =
-      List.of(
-          RawSpanConstants.getValue(CensusResponse.CENSUS_RESPONSE_STATUS_CODE),
-          RawSpanConstants.getValue(CensusResponse.CENSUS_RESPONSE_CENSUS_STATUS_CODE),
-          RawSpanConstants.getValue(OTSpanTag.OT_SPAN_TAG_HTTP_STATUS_CODE),
-          RawSpanConstants.getValue(Grpc.GRPC_STATUS_CODE),
-          RawSpanConstants.getValue(Http.HTTP_RESPONSE_STATUS_CODE));
-
-  // Hypertrace span kind values
-  private static final String SPAN_KIND_UNKNOWN = "UNKNOWN";
-  private static final String SPAN_KIND_ENTRY = "ENTRY";
-  private static final String SPAN_KIND_EXIT = "EXIT";
-
-  static String getSpanKindFromRawSpan(Event e) {
-    String spanKind = SpanAttributeUtils.getStringAttribute(e, SPAN_KIND_KEY);
-    if (SERVER_VALUE.equalsIgnoreCase(spanKind)) {
-      return SPAN_KIND_ENTRY;
-    }
-    if (CLIENT_VALUE.equalsIgnoreCase(spanKind)) {
-      return SPAN_KIND_EXIT;
-    }
-
-    return SPAN_KIND_UNKNOWN;
-  }
-
-  static String getStatusCodeFromRawSpan(Event e) {
-    return SpanAttributeUtils.getFirstAvailableStringAttribute(e, STATUS_CODE_KEYS);
-  }
 
   @Override
   List<SpanEventView> generateView(
@@ -85,7 +43,8 @@ public class SpanEventViewGenerator extends BaseViewGenerator<SpanEventView> {
   }
 
   private SpanEventView.Builder generateViewBuilder(
-      Event event, ByteBuffer traceId, Map<ByteBuffer, ByteBuffer> childToParentEventIds) {
+      Event event, ByteBuffer traceId,
+      Map<ByteBuffer, ByteBuffer> childToParentEventIds) {
 
     SpanEventView.Builder builder = SpanEventView.newBuilder();
 
@@ -120,5 +79,16 @@ public class SpanEventViewGenerator extends BaseViewGenerator<SpanEventView> {
     builder.setStatusCode(getStatusCodeFromRawSpan(event));
 
     return builder;
+  }
+
+  static String getStatusCodeFromRawSpan(Event e) {
+    return SpanAttributeUtils.getStringAttribute(
+        e, EnrichedSpanConstants.getValue(Api.API_STATUS_CODE));
+  }
+
+  static String getSpanKindFromRawSpan(Event e) {
+    return SpanAttributeUtils.getStringAttributeWithDefault(
+        e, EnrichedSpanConstants.getValue(CommonAttribute.COMMON_ATTRIBUTE_SPAN_TYPE),
+        EnrichedSpanConstants.getValue(BoundaryTypeValue.BOUNDARY_TYPE_VALUE_UNSPECIFIED));
   }
 }
