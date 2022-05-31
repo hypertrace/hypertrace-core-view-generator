@@ -16,7 +16,7 @@ tasks.test {
 
 dependencies {
   implementation(project(":hypertrace-core-view-generator-api"))
-  implementation("org.hypertrace.core.viewcreator:view-creator-framework:0.1.25")
+  implementation("org.hypertrace.core.viewcreator:view-creator-framework:0.4.2")
 
   constraints {
     implementation("net.minidev:json-smart:2.4.1") {
