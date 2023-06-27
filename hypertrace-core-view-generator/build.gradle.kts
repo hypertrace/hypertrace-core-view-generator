@@ -21,7 +21,7 @@ dependencies {
   implementation("org.hypertrace.core.spannormalizer:raw-span-constants:0.1.22")
 
   implementation("com.google.code.findbugs:jsr305:3.0.2")
-  implementation("org.apache.avro:avro:1.10.2")
+  implementation("org.apache.avro:avro:1.11.1")
   implementation("org.apache.commons:commons-lang3:3.11")
 
   testImplementation("org.junit.jupiter:junit-jupiter:5.7.0")
